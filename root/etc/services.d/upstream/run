@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv sh
+
+TRUST_ANCHOR1=.,19036,8,2,49aac11d7b6f6446702e54a1607371607a1a41855200fd2ce1cdde32f24e8fb5
+TRUST_ANCHOR2=.,20326,8,2,e06d44b80b8f1d39a95c0b0d7c65d08458e880409bbc683457104237c7f8ec8d
+
+/usr/sbin/dnsmasq -d \
+          -r /etc/upstream/resolv.conf \
+          --conf-file=/etc/upstream.conf \
+          -p 5300 \
+          -x /run/upstream/upstream.pid \
+          --trust-anchor=$TRUST_ANCHOR1 \
+          --trust-anchor=$TRUST_ANCHOR2
+

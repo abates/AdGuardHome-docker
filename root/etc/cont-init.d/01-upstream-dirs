@@ -1,0 +1,25 @@
+#!/bin/sh
+
+if [ ! -e /var/run/upstream ] ; then
+  mkdir /var/run/upstream
+fi
+
+if [ ! -e /etc/upstream ] ; then
+  mkdir /etc/upstream
+fi
+
+if [ ! -e /etc/upstream.d ] ; then
+  mkdir /etc/upstream.d
+fi
+
+if [ -e /var/lib/misc/dnsmasq.leases ] ; then
+  chown dnsmasq:dnsmasq  /var/lib/misc/dnsmasq.leases
+fi
+
+chown dnsmasq:dnsmasq -R /var/run/upstream /etc/upstream /etc/upstream.d/*
+chmod 750 /var/run/upstream /etc/upstream /etc/upstream.d
+
+if [ -e /opt/adguardhome/conf/AdGuardHome.yaml ] ; then
+  yq e -i '.dns.upstream_dns = ["127.0.0.1:5300"]' /opt/adguardhome/conf/AdGuardHome.yaml 
+fi
+

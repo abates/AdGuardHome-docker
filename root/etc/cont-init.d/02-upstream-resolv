@@ -1,0 +1,15 @@
+#!/bin/bash
+
+DNS_ARR=(8.8.8.8 8.8.4.4)
+if [ -n "${DNS1}" ] ; then
+  DNS_ARR=( "$DNS1" )
+fi
+
+if [[ -n "${DNS2}" && "${DNS2}" != "no" ]] ; then
+  DNS_ARR+=( "$DNS2" )
+fi
+
+echo -n "" > /etc/upstream/resolv.conf
+for d in ${DNS_ARR[@]} ; do
+  echo "nameserver $d" >> /etc/upstream/resolv.conf
+done
